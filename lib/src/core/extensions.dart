@@ -4,8 +4,8 @@ import 'package:tradingview_ta/src/tradingview_ta/trading_view_model.dart';
 extension GetValueEnum on Enum {
   String getValueScreener() {
     return this == Screener.crypto
-        ? NetworkConst.cryptoEndPoint
-        : NetworkConst.forexEndPoint;
+        ? "${NetworkConst.cryptoEndPoint}/scan"
+        : "${NetworkConst.forexEndPoint}/scan";
   }
 
   String getValueInterval() {
