@@ -2,7 +2,7 @@ import 'package:tradingview_ta/src/constant/network_constant.dart';
 import 'package:tradingview_ta/src/tradingview_ta/trading_view_model.dart';
 
 extension GetValueEnum on Enum {
-  String getValueScreener() {
+  String getUrlScreener() {
     return this == Screener.crypto
         ? "${NetworkConst.cryptoEndPoint}/scan"
         : "${NetworkConst.forexEndPoint}/scan";
