@@ -11,25 +11,25 @@ extension GetValueEnum on Enum {
   String getValueInterval() {
     switch (this) {
       case Intervals.INTERVAL_1_MINUTE:
-        return "1m";
+        return "|1";
       case Intervals.INTERVAL_5_MINUTES:
-        return "5m";
+        return "|5";
       case Intervals.INTERVAL_15_MINUTES:
-        return "15m";
+        return "|15";
       case Intervals.INTERVAL_30_MINUTES:
-        return "30m";
+        return "|30";
       case Intervals.INTERVAL_1_HOUR:
-        return "1h";
+        return "|60";
       case Intervals.INTERVAL_2_HOURS:
-        return "2h";
+        return "|120";
       case Intervals.INTERVAL_4_HOURS:
-        return "4h";
+        return "|240";
       case Intervals.INTERVAL_1_DAY:
-        return "1d";
+        return "";
       case Intervals.INTERVAL_1_WEEK:
-        return "1w";
+        return "|1W";
       case Intervals.INTERVAL_1_MONTH:
-        return "1M";
+        return "|1M";
       default:
         return "1h";
     }
