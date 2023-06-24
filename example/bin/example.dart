@@ -8,6 +8,9 @@ void main(List<String> arguments) async {
       symbols: ["BINANCE:BTCUSDT", "BINANCE:ETHUSDT"],
     ),
   );
-  List<Map<String, dynamic>> res = await tradingViewTA.getSupportAndResistant();
-  print(res);
+  List<Map<String, dynamic>> resSupportAndResistant =
+      await tradingViewTA.getSupportAndResistant();
+  List<Map<String, dynamic>> resAnalysis = await tradingViewTA.getAnalysis();
+  print(resSupportAndResistant);
+  print(resAnalysis);
 }
