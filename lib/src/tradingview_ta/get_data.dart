@@ -1,4 +1,5 @@
 import 'package:tradingview_ta/src/constant/list_contant.dart';
+import 'package:tradingview_ta/src/constant/network_constant.dart';
 import 'package:tradingview_ta/src/core/extensions.dart';
 import 'package:tradingview_ta/src/dio_maneger/dio_manger.dart';
 import 'package:tradingview_ta/src/tradingview_ta/trading_view_model.dart';
@@ -14,7 +15,7 @@ class GetData {
     Map<String, dynamic> output = {};
 
     final res = await DioManagerClass.getInstance.dioPostMethod(
-      url: tradingView.screener.getUrlScreener(),
+      url: "${tradingView.screener.toLowerCase()}/scan",
       body: {
         "symbols": {
           "tickers": tradingView.symbols,

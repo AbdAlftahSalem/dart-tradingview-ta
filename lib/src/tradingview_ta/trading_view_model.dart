@@ -1,5 +1,5 @@
 class TradingViewModel {
-  Screener screener;
+  String screener;
   Intervals interval;
 
   List<String> symbols;
@@ -22,9 +22,4 @@ enum Intervals {
   INTERVAL_1_DAY,
   INTERVAL_1_WEEK,
   INTERVAL_1_MONTH
-}
-
-enum Screener {
-  crypto,
-  forex,
 }

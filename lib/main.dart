@@ -5,7 +5,7 @@ import 'src/tradingview_ta/get_data.dart';
 main() {
   GetData x = GetData(
     tradingView: TradingViewModel(
-      screener: Screener.crypto,
+      screener: "crypto",
       symbols: ["BINANCE:BTCUSDT", "BINANCE:ETHUSDT"],
     ),
   );
