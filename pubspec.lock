@@ -74,7 +74,7 @@ packages:
     source: hosted
     version: "3.0.3"
   dio:
-    dependency: "direct dev"
+    dependency: "direct main"
     description:
       name: dio
       sha256: a9d76e72985d7087eb7c5e7903224ae52b337131518d127c554b9405936752b8
@@ -194,7 +194,7 @@ packages:
     source: hosted
     version: "2.1.0"
   path:
-    dependency: transitive
+    dependency: "direct main"
     description:
       name: path
       sha256: "8829d8a55c13fc0e37127c29fedf290c102f4e40ae94ada574091fe0ff96c917"
