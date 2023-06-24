@@ -6,6 +6,7 @@ void main(List<String> arguments) async {
     tradingView: TradingViewModel(
       screener: "crypto",
       symbols: ["BINANCE:BTCUSDT", "BINANCE:ETHUSDT"],
+      interval: Intervals.INTERVAL_1_HOUR,
     ),
   );
   List<Map<String, dynamic>> resSupportAndResistant =

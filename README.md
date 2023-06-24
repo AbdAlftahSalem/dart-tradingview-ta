@@ -37,9 +37,9 @@ Parameters:
 
         .. image:: https://raw.githubusercontent.com/brian-the-dev/python-tradingview-ta/main/images/tv-list.png
 
-    * symbol (``list``) – Ticker symbols (e.g., ``"AAPL"``, ``"TLKM"``, ``"USDEUR"``, ``"BTCUSDT"``).
-    * exchange (``str``) – Exchange (e.g., ``"nasdaq"``, ``"idx"``, ``Exchange.FOREX``, ``"binance"``).
+    * symbol   (``list``) – Ticker symbols (e.g., ``"AAPL"``, ``"TLKM"``, ``"USDEUR"``, ``"BTCUSDT"``).
     * screener (``str``) – Screener (e.g., ``"america"``, ``"indonesia"``, ``"forex"``, ``"crypto"``).
+    * interval (``enum``) – Interval (e.g., ``"Intervals.INTERVAL_1_MINUTE"``, ``"INTERVAL_5_MINUTES"``, ``"INTERVAL_15_MINUTES"``, ``"INTERVAL_30_MINUTES"``  , ``"INTERVAL_1_HOUR"``, ``"INTERVAL_2_HOURS"``, ``"INTERVAL_4_HOURS"``, ``"INTERVAL_1_DAY"``  , ``"INTERVAL_1_WEEK"``, ``"INTERVAL_1_MONTH"``).
 
         .. note::
 
@@ -69,11 +69,19 @@ Parameters:
 Retrieving the analysis
 -----------------------
 
-    TradingViewTA tradingViewTA = TradingViewTA(
-    tradingView: TradingViewModel(
-      screener: "crypto",
-      symbols: ["BINANCE:BTCUSDT", "BINANCE:ETHUSDT"],
-    ),
+      TradingViewTA tradingViewTA = TradingViewTA(
+        tradingView: TradingViewModel(
+          screener: "crypto",
+          symbols: ["BINANCE:BTCUSDT", "BINANCE:ETHUSDT"],
+          interval: Intervals.INTERVAL_1_HOUR,
+        ),
+      );
+
+    List<Map<String, dynamic>> resSupportAndResistant =
+    await tradingViewTA.getSupportAndResistant();
+    List<Map<String, dynamic>> resAnalysis = await tradingViewTA.getAnalysis();
+    print(resSupportAndResistant);
+    print(resAnalysis);
 
 Methods:
 

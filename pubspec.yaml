@@ -8,7 +8,6 @@ environment:
   sdk: '>=2.19.2 <3.0.0'
 
 dependencies:
-   path: ^1.8.0
    dio: ^5.2.1+1
 
 
