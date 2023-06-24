@@ -30,6 +30,23 @@ class TradingViewTA {
     }
   }
 
+  Future<List<Map<String, dynamic>>> getSupportAndResistant() async {
+    List<Map<String, dynamic>> output = [];
+    validationInput();
+    List<Map<String, dynamic>> analysis = await getAnalysis();
+
+    for (var i in analysis) {
+      output.add(
+        {
+          "ticker": i["ticker"],
+          "SupportAndResistant": getSupportAndResistantAsMap(i["indicators"]),
+        },
+      );
+    }
+
+    return output;
+  }
+
   List<String> formatInputIndicators() {
     List<String> newIndicators = [];
     for (var i in ListsCont.indicators) {
@@ -63,6 +80,123 @@ class TradingViewTA {
     }
 
     return outPut;
+  }
+
+  Map<String, dynamic> getSupportAndResistantAsMap(List indicators) {
+    double pivotMClassicS3 = indicators
+        .firstWhere((element) => element["indicatorsName"]== "Pivot.M.Classic.S3")["value"];
+
+    double pivotMClassicS2 = indicators
+        .firstWhere((element) => element["indicatorsName"]== "Pivot.M.Classic.S2")["value"];
+
+    double pivotMClassicS1 = indicators
+        .firstWhere((element) => element["indicatorsName"]== "Pivot.M.Classic.S1")["value"];
+
+    double pivotMClassicR3 = indicators
+        .firstWhere((element) => element["indicatorsName"]== "Pivot.M.Classic.R3")["value"];
+
+    double pivotMClassicR2 = indicators
+        .firstWhere((element) => element["indicatorsName"]== "Pivot.M.Classic.R2")["value"];
+
+    double pivotMClassicR1 = indicators
+        .firstWhere((element) => element["indicatorsName"]== "Pivot.M.Classic.R1")["value"];
+
+    double pivotMClassicMiddle = indicators
+        .firstWhere((element) => element["indicatorsName"]== "Pivot.M.Classic.Middle")["value"];
+
+    double pivotMFibonacciS3 = indicators
+        .firstWhere((element) => element["indicatorsName"] == "Pivot.M.Fibonacci.S3")["value"];
+
+    double pivotMFibonacciS2 = indicators
+        .firstWhere((element) => element["indicatorsName"] == "Pivot.M.Fibonacci.S2")["value"];
+
+    double pivotMFibonacciS1 = indicators
+        .firstWhere((element) => element["indicatorsName"] == "Pivot.M.Fibonacci.S1")["value"];
+
+    double pivotMFibonacciR3 = indicators
+        .firstWhere((element) => element["indicatorsName"] == "Pivot.M.Fibonacci.R3")["value"];
+
+    double pivotMFibonacciR2 = indicators
+        .firstWhere((element) => element["indicatorsName"] == "Pivot.M.Fibonacci.R2")["value"];
+
+    double pivotMFibonacciR1 = indicators
+        .firstWhere((element) => element["indicatorsName"] == "Pivot.M.Fibonacci.R1")["value"];
+
+    double pivotMFibonacciMiddle = indicators
+        .firstWhere((element) => element["indicatorsName"] == "Pivot.M.Fibonacci.Middle")["value"];
+
+    double pivotMCamarillaS3 = indicators
+        .firstWhere((element) => element["indicatorsName"] == "Pivot.M.Camarilla.S3")["value"];
+
+    double pivotMCamarillaS2 = indicators
+        .firstWhere((element) => element["indicatorsName"] == "Pivot.M.Camarilla.S2")["value"];
+
+    double pivotMCamarillaS1 = indicators
+        .firstWhere((element) => element["indicatorsName"] == "Pivot.M.Camarilla.S1")["value"];
+
+    double pivotMCamarillaR3 = indicators
+        .firstWhere((element) => element["indicatorsName"] == "Pivot.M.Camarilla.R3")["value"];
+
+    double pivotMCamarillaR2 = indicators
+        .firstWhere((element) => element["indicatorsName"] == "Pivot.M.Camarilla.R2")["value"];
+
+    double pivotMCamarillaR1 = indicators
+        .firstWhere((element) => element["indicatorsName"] == "Pivot.M.Camarilla.R1")["value"];
+
+    double pivotMCamarillaMiddle = indicators
+        .firstWhere((element) => element["indicatorsName"] == "Pivot.M.Camarilla.Middle")["value"];
+
+    double pivotMWoodieS3 = indicators
+        .firstWhere((element) => element["indicatorsName"] == "Pivot.M.Woodie.S3")["value"];
+
+    double pivotMWoodieS2 = indicators
+        .firstWhere((element) => element["indicatorsName"] == "Pivot.M.Woodie.S2")["value"];
+
+    double pivotMWoodieS1 = indicators
+        .firstWhere((element) => element["indicatorsName"] == "Pivot.M.Woodie.S1")["value"];
+
+    double pivotMWoodieR3 = indicators
+        .firstWhere((element) => element["indicatorsName"] == "Pivot.M.Woodie.R3")["value"];
+
+    double pivotMWoodieR2 = indicators
+        .firstWhere((element) => element["indicatorsName"] == "Pivot.M.Woodie.R2")["value"];
+
+    double pivotMWoodieR1 = indicators
+        .firstWhere((element) => element["indicatorsName"] == "Pivot.M.Woodie.R1")["value"];
+
+    double pivotMWoodieMiddle = indicators
+        .firstWhere((element) => element["indicatorsName"] == "Pivot.M.Woodie.Middle")["value"];
+
+    return {
+      "r3": pivotMWoodieR3 +
+          pivotMCamarillaR3 +
+          pivotMClassicR3 +
+          pivotMFibonacciR3,
+      "r2": pivotMWoodieR2 +
+          pivotMCamarillaR2 +
+          pivotMClassicR2 +
+          pivotMFibonacciR2,
+      "r1": pivotMWoodieR1 +
+          pivotMCamarillaR1 +
+          pivotMClassicR1 +
+          pivotMFibonacciR1,
+      "s1": pivotMWoodieS1 +
+          pivotMCamarillaS1 +
+          pivotMClassicS1 +
+          pivotMFibonacciS1,
+      "s2": pivotMWoodieS2 +
+          pivotMCamarillaS2 +
+          pivotMClassicS2 +
+          pivotMFibonacciS2,
+      "s3": pivotMWoodieS3 +
+          pivotMCamarillaS3 +
+          pivotMClassicS3 +
+          pivotMFibonacciS3,
+      "middle": pivotMWoodieMiddle +
+          pivotMCamarillaMiddle +
+          pivotMClassicMiddle +
+          pivotMFibonacciMiddle,
+    };
   }
 
   void validationInput() {

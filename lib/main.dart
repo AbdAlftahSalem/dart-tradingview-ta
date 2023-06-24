@@ -9,5 +9,6 @@ main() async {
       symbols: ["BINANCE:BTCUSDT", "BINANCE:ETHUSDT"],
     ),
   );
-  List<Map<String, dynamic>> res = await tradingViewTA.getAnalysis();
+  List<Map<String, dynamic>> res = await tradingViewTA.getSupportAndResistant();
+  print(res);
 }
