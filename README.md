@@ -9,7 +9,7 @@ The Python package was rewritten in Dart to make it compatible with Dart-based p
 Dart ecosystem. The goal was to bring the functionality of the original Python package to Dart developers, allowing them
 to perform technical analysis and build trading strategies using Dart.
 Usage
-=====
+===
 
 Importing TradingView_TA
 ------------------------
