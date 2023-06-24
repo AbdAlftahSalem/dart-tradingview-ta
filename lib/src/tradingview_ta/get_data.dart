@@ -11,6 +11,7 @@ class TradingViewTA {
   }
 
   Future<List<Map<String, dynamic>>> getAnalysis() async {
+    validationInput();
     final res = await DioManagerClass.getInstance.dioPostMethod(
       url: "${tradingView.screener.toLowerCase()}/scan",
       body: {
@@ -64,5 +65,29 @@ class TradingViewTA {
     }
 
     return outPut;
+  }
+
+  void validationInput() {
+    tickersValidation();
+    screenerValidation();
+  }
+
+  void tickersValidation() {
+    int length = tradingView.symbols
+        .where((element) => element.split(":").length != 2)
+        .length;
+    if (length != 0) {
+      throw Exception(
+        "One symbol or multi symbols with exchange\nEnter valid symbols like : BINANCE:ETHUSDT",
+      );
+    }
+  }
+
+  void screenerValidation() {
+    if (tradingView.screener.isEmpty) {
+      throw Exception(
+        "Screener is empty . check screen before start searching",
+      );
+    }
   }
 }
