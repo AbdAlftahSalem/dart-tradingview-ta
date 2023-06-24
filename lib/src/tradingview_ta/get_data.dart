@@ -11,20 +11,20 @@ class TradingViewTA {
   }
 
   Future<List<Map<String, dynamic>>> getAnalysis() async {
-    validationInput();
+    _validationInput();
     final res = await DioManagerClass.getInstance.dioPostMethod(
       url: tradingView.screener.toLowerCase(),
       body: {
         "symbols": {
           "tickers": tradingView.symbols,
         },
-        "columns": formatInputIndicators(),
+        "columns": _formatInputIndicators(),
       },
       header: {"User-Agent": "tradingview_ta/3.3.0"},
     );
 
     if (res.statusCode == 200) {
-      return formatResToMap(res.data);
+      return _formatResToMap(res.data);
     } else {
       throw Exception(res.data);
     }
@@ -32,14 +32,14 @@ class TradingViewTA {
 
   Future<List<Map<String, dynamic>>> getSupportAndResistant() async {
     List<Map<String, dynamic>> output = [];
-    validationInput();
+    _validationInput();
     List<Map<String, dynamic>> analysis = await getAnalysis();
 
     for (var i in analysis) {
       output.add(
         {
           "ticker": i["ticker"],
-          "SupportAndResistant": getSupportAndResistantAsMap(i["indicators"]),
+          "SupportAndResistant": _getSupportAndResistantAsMap(i["indicators"]),
         },
       );
     }
@@ -47,7 +47,7 @@ class TradingViewTA {
     return output;
   }
 
-  List<String> formatInputIndicators() {
+  List<String> _formatInputIndicators() {
     List<String> newIndicators = [];
     for (var i in ListsCont.indicators) {
       newIndicators.add("$i${tradingView.interval.getValueInterval()}");
@@ -55,13 +55,13 @@ class TradingViewTA {
     return newIndicators;
   }
 
-  List<Map<String, dynamic>> formatResToMap(Map res) {
+  List<Map<String, dynamic>> _formatResToMap(Map res) {
     List<Map<String, dynamic>> outPut = [];
     for (int i = 0; i < res["data"].length; ++i) {
       outPut.add(
         {
           "ticker": res["data"][i]["s"],
-          "indicators": formatOutPutIndicators(res["data"][0]['d']),
+          "indicators": _formatOutPutIndicators(res["data"][0]['d']),
         },
       );
     }
@@ -69,7 +69,7 @@ class TradingViewTA {
     return outPut;
   }
 
-  List formatOutPutIndicators(List input) {
+  List _formatOutPutIndicators(List input) {
     List<Map<String, dynamic>> outPut = [];
 
     for (int i = 0; i < input.length; ++i) {
@@ -82,7 +82,7 @@ class TradingViewTA {
     return outPut;
   }
 
-  Map<String, dynamic> getSupportAndResistantAsMap(List indicators) {
+  Map<String, dynamic> _getSupportAndResistantAsMap(List indicators) {
     double pivotMClassicS3 = indicators
         .firstWhere((element) => element["indicatorsName"]== "Pivot.M.Classic.S3")["value"];
 
@@ -199,12 +199,12 @@ class TradingViewTA {
     };
   }
 
-  void validationInput() {
-    tickersValidation();
-    screenerValidation();
+  void _validationInput() {
+    _tickersValidation();
+    _screenerValidation();
   }
 
-  void tickersValidation() {
+  void _tickersValidation() {
     int length = tradingView.symbols
         .where((element) => element.split(":").length != 2)
         .length;
@@ -215,7 +215,7 @@ class TradingViewTA {
     }
   }
 
-  void screenerValidation() {
+  void _screenerValidation() {
     if (tradingView.screener.isEmpty) {
       throw Exception(
         "Screener is empty . check screen before start searching",
