@@ -13,7 +13,7 @@ class TradingViewTA {
   Future<List<Map<String, dynamic>>> getAnalysis() async {
     validationInput();
     final res = await DioManagerClass.getInstance.dioPostMethod(
-      url: "${tradingView.screener.toLowerCase()}/scan",
+      url: tradingView.screener.toLowerCase(),
       body: {
         "symbols": {
           "tickers": tradingView.symbols,
@@ -28,8 +28,6 @@ class TradingViewTA {
     } else {
       throw Exception(res.data);
     }
-
-    return [];
   }
 
   List<String> formatInputIndicators() {

@@ -49,7 +49,7 @@ class DioManagerClass {
     required Map<String, dynamic> body,
   }) async {
     return await _dio!.post(
-      url,
+      "$url/scan",
       queryParameters: queryParameters,
       options: Options(headers: header),
       data: body,
