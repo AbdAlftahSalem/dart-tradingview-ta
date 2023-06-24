@@ -2,12 +2,12 @@ import 'package:tradingview_ta/src/tradingview_ta/trading_view_model.dart';
 
 import 'src/tradingview_ta/get_data.dart';
 
-main() {
-  GetData x = GetData(
+main() async {
+  TradingViewTA tradingViewTA = TradingViewTA(
     tradingView: TradingViewModel(
       screener: "crypto",
       symbols: ["BINANCE:BTCUSDT", "BINANCE:ETHUSDT"],
     ),
   );
-  x.getAnalysis();
+  List<Map<String, dynamic>> res = await tradingViewTA.getAnalysis();
 }

@@ -1,19 +1,16 @@
 import 'package:tradingview_ta/src/constant/list_contant.dart';
-import 'package:tradingview_ta/src/constant/network_constant.dart';
 import 'package:tradingview_ta/src/core/extensions.dart';
 import 'package:tradingview_ta/src/dio_maneger/dio_manger.dart';
 import 'package:tradingview_ta/src/tradingview_ta/trading_view_model.dart';
 
-class GetData {
+class TradingViewTA {
   TradingViewModel tradingView;
 
-  GetData({required this.tradingView}) {
+  TradingViewTA({required this.tradingView}) {
     DioManagerClass.getInstance.init();
   }
 
-  Future<Map<String, dynamic>> getAnalysis() async {
-    Map<String, dynamic> output = {};
-
+  Future<List<Map<String, dynamic>>> getAnalysis() async {
     final res = await DioManagerClass.getInstance.dioPostMethod(
       url: "${tradingView.screener.toLowerCase()}/scan",
       body: {
@@ -26,12 +23,12 @@ class GetData {
     );
 
     if (res.statusCode == 200) {
-      formatResToMap(res.data);
+      return formatResToMap(res.data);
     } else {
       throw Exception(res.data);
     }
 
-    return output;
+    return [];
   }
 
   List<String> formatInputIndicators() {
@@ -42,9 +39,8 @@ class GetData {
     return newIndicators;
   }
 
-  Map<String, dynamic> formatResToMap(Map res) {
+  List<Map<String, dynamic>> formatResToMap(Map res) {
     List<Map<String, dynamic>> outPut = [];
-    print(res["data"]);
     for (int i = 0; i < res["data"].length; ++i) {
       outPut.add(
         {
@@ -53,9 +49,8 @@ class GetData {
         },
       );
     }
-    print(outPut);
 
-    return {};
+    return outPut;
   }
 
   List formatOutPutIndicators(List input) {
