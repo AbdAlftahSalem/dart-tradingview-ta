@@ -44,15 +44,15 @@ class GetData {
   Map<String, dynamic> formatResToMap(Map res) {
     List<Map<String, dynamic>> outPut = [];
     print(res["data"]);
-    print(formatOutPutIndicators(res["data"]));
     for (int i = 0; i < res["data"].length; ++i) {
       outPut.add(
         {
           "ticker": res["data"][i]["s"],
-          "indicators": [],
+          "indicators": formatOutPutIndicators(res["data"][0]['d']),
         },
       );
     }
+    print(outPut);
 
     return {};
   }
