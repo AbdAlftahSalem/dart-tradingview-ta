@@ -8,6 +8,10 @@
 ## Important
 
 - Keep tradingview-ta up to date for new features and bug fixes: `flutter pub add tradingview_ta`
+- This project is a Dart implementation of
+the [python-tradingview-ta](https://github.com/AnalyzerREST/python-tradingview-ta) package, originally developed in
+Python. It provides technical analysis indicators and strategies for analyzing trading data from the TradingView
+platform.
 
 ## Features
 
