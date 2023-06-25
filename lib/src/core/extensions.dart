@@ -18,13 +18,13 @@ extension GetValueEnum on Enum {
       case Intervals.INTERVAL_4_HOURS:
         return "|240";
       case Intervals.INTERVAL_1_DAY:
-        return "";
+        return "|1d";
       case Intervals.INTERVAL_1_WEEK:
         return "|1W";
       case Intervals.INTERVAL_1_MONTH:
         return "|1M";
       default:
-        return "1h";
+        return "|60";
     }
   }
 }

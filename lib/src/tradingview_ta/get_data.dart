@@ -35,19 +35,24 @@ class TradingViewTA {
   }) async {
     _validationInput();
 
+    List<String> indicatorsSend =
+        _formatInputIndicatorsMultiIntervals(intervals: intervals);
     final res = await DioManagerClass.getInstance.dioPostMethod(
       url: tradingView.screener.toLowerCase(),
       body: {
         "symbols": {
           "tickers": tradingView.symbols,
         },
-        "columns": _formatInputIndicatorsMultiIntervals(intervals: intervals),
+        "columns": indicatorsSend,
       },
       header: {"User-Agent": "tradingview_ta/3.3.0"},
     );
 
     if (res.statusCode == 200) {
-      return _formatResToMapMultiInterval(res.data, intervals);
+      // return _formatResToMapMultiInterval(res.data, indicatorsSend);
+      var x = _formatResToMapMultiInterval(res.data, indicatorsSend);
+      print(x);
+      return [];
     } else {
       throw Exception(res.data);
     }
@@ -104,24 +109,55 @@ class TradingViewTA {
     return outPut;
   }
 
-  List<Map<String, dynamic>> _formatResToMapMultiInterval(
-      Map res, List<Intervals> intervals) {
-    List<Map<String, dynamic>> outPut = [];
-    for (var interval in intervals) {
-      print(interval);
-      for (int i = 0; i < res["data"].length; ++i) {
-        outPut.add(
-          {
-            "ticker": res["data"][i]["s"],
-            "interval": interval,
-            "indicators":
-                _formatOutPutIndicatorsMultiInterval(res["data"][0]['d']),
-          },
-        );
-      }
+  Map<String, dynamic> _formatResToMapMultiInterval(
+      Map res, List<String> indicatorsSend) {
+    Map<String, dynamic> outPut = {};
+
+    for (int i = 0; i < indicatorsSend.length; i++) {
+      outPut[indicatorsSend[i]] = res["data"][0]['d'][i];
     }
 
-    return outPut;
+    return x(outPut);
+  }
+
+  x(Map originalMap) {
+    Map<String, dynamic> resultMap = {};
+
+    originalMap.forEach((key, value) {
+      if (key.endsWith("1|")) {
+        resultMap["1m"] ??= {};
+        resultMap["1m"][key.toString().split("|")[0]] = value;
+      } else if (key.endsWith("|5")) {
+        resultMap["5m"] ??= {};
+        resultMap["5m"][key.toString().split("|")[0]] = value;
+      } else if (key.endsWith("|15")) {
+        resultMap["15m"] ??= {};
+        resultMap["15m"][key.toString().split("|")[0]] = value;
+      } else if (key.endsWith("|30")) {
+        resultMap["30m"] ??= {};
+        resultMap["30m"][key.toString().split("|")[0]] = value;
+      } else if (key.endsWith("|60")) {
+        resultMap["60m"] ??= {};
+        resultMap["60m"][key.toString().split("|")[0]] = value;
+      } else if (key.endsWith("|120")) {
+        resultMap["2h"] ??= {};
+        resultMap["2h"][key.toString().split("|")[0]] = value;
+      } else if (key.endsWith("|240")) {
+        resultMap["4h"] ??= {};
+        resultMap["4h"][key.toString().split("|")[0]] = value;
+      } else if (key.endsWith("|1W")) {
+        resultMap["1W"] ??= {};
+        resultMap["1W"][key.toString().split("|")[0]] = value;
+      } else if (key.endsWith("|1M")) {
+        resultMap["1M"] ??= {};
+        resultMap["1M"][key.toString().split("|")[0]] = value;
+      } else if (key.endsWith("|1d")) {
+        resultMap["1D"] ??= {};
+        resultMap["1D"][key.toString().split("|")[0]] = value;
+      }
+    });
+   
+    return resultMap;
   }
 
   List _formatOutPutIndicators(List input) {
@@ -133,20 +169,6 @@ class TradingViewTA {
         "value": input[i],
       });
     }
-
-    return outPut;
-  }
-
-  List _formatOutPutIndicatorsMultiInterval(List input) {
-    List<Map<String, dynamic>> outPut = [];
-    print("Input");
-    print(input);
-    // for (int i = 0; i < input.length; ++i) {
-    //   outPut.add({
-    //     "indicatorsName": ListsCont.indicators[i],
-    //     "value": input[i],
-    //   });
-    // }
 
     return outPut;
   }
