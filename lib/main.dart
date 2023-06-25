@@ -7,8 +7,9 @@ main() async {
     tradingView: TradingViewModel(
       screener: "crypto",
       symbols: ["BINANCE:BTCUSDT", "BINANCE:ETHUSDT"],
+      interval: Intervals.INTERVAL_1_DAY
     ),
   );
-  List<Map<String, dynamic>> res = await tradingViewTA.getSupportAndResistant();
+  List<Map<String, dynamic>> res = await tradingViewTA.getAnalysis();
   print(res);
 }
