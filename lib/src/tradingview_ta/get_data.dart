@@ -93,7 +93,8 @@ class TradingViewTA {
   List<String> _formatInputIndicators() {
     List<String> newIndicators = [];
     for (var i in ListsCont.indicators) {
-      newIndicators.add("$i${tradingView.interval.getValueInterval()}");
+      newIndicators
+          .add("$i${tradingView.interval.getValueIntervalToResponse()}");
     }
     return newIndicators;
   }
@@ -104,7 +105,7 @@ class TradingViewTA {
     List<String> newIndicators = [];
     for (var interval in intervals) {
       for (var indicator in ListsCont.indicators) {
-        newIndicators.add("$indicator${interval.getValueInterval()}");
+        newIndicators.add("$indicator${interval.getValueIntervalToResponse()}");
       }
     }
     return newIndicators;
@@ -116,6 +117,7 @@ class TradingViewTA {
       outPut.add(
         {
           "ticker": res["data"][i]["s"],
+          "interval": tradingView.interval.getValueIntervalToResponse(),
           "indicators": _formatOutPutIndicators(res["data"][0]['d']),
         },
       );
