@@ -9,6 +9,7 @@ main() async {
         symbols: ["BINANCE:BTCUSDT", "BINANCE:ETHUSDT"],
         interval: Intervals.INTERVAL_1_DAY),
   );
+
   List<Map<String, dynamic>> res =
       await tradingViewTA.getAnalysisWithMultiFrame(
     intervals: [

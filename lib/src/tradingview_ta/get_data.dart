@@ -50,12 +50,25 @@ class TradingViewTA {
 
     if (res.statusCode == 200) {
       // return _formatResToMapMultiInterval(res.data, indicatorsSend);
-      var x = _formatResToMapMultiInterval(res.data, indicatorsSend);
+      var x = newFunc(res.data, indicatorsSend);
       print(x);
       return [];
     } else {
       throw Exception(res.data);
     }
+  }
+
+  List<Map<String, dynamic>> newFunc(Map res, List<String> indicatorsSend) {
+    List<Map<String, dynamic>> output = [];
+print(res["data"]);
+    for (var i in res["data"]) {
+      output.add({
+        "ticker": i["s"],
+        "indicators": _formatResToMapMultiInterval(res, indicatorsSend),
+      });
+    }
+
+    return output;
   }
 
   Future<List<Map<String, dynamic>>> getSupportAndResistant() async {
@@ -156,7 +169,7 @@ class TradingViewTA {
         resultMap["1D"][key.toString().split("|")[0]] = value;
       }
     });
-   
+
     return resultMap;
   }
 
