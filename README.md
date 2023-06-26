@@ -71,6 +71,7 @@ Tip: Use https://tvdb.analyzer.rest/ if you don't know what symbol, screener, an
 
 - getAnalysis()
 - getSupportAndResistant ()
-
+- getAnalysisWithMultiFrame()
+  
 [Package on pub.dev](https://pub.dev/packages/tradingview_ta)
 
