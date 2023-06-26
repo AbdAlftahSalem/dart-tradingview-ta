@@ -1,3 +1,3 @@
-## 1.2.0
+## 1.3.0
 
-- Update readme file
+- Add multi tickers with multi frames
