@@ -30,7 +30,7 @@ GitHub (latest):
 
 ## Example
 
-```
+```python
 // to get multi ticekr data with signal interval
 
 
@@ -46,7 +46,6 @@ GitHub (latest):
 
 
   List<Map<String, dynamic>> resAnalysis = await tradingViewTA.getAnalysis();
-
 
 
 // to get multi ticekr data with multi interval
