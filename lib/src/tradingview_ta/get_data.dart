@@ -33,7 +33,10 @@ class TradingViewTA {
   Future<List<Map<String, dynamic>>> getAnalysisWithMultiFrame({
     required List<Intervals> intervals,
   }) async {
-    _validationInput();
+    _validationInput(
+      validateMultiTickers: true,
+      intervals: intervals,
+    );
 
     List<String> indicatorsSend =
         _formatInputIndicatorsMultiIntervals(intervals: intervals);
@@ -302,9 +305,23 @@ class TradingViewTA {
     };
   }
 
-  void _validationInput() {
+  void _validationInput({
+    bool validateMultiTickers = false,
+    List<Intervals> intervals = const [],
+  }) {
+    multiIntervalsValidation(validateMultiTickers, intervals);
     _tickersValidation();
     _screenerValidation();
+  }
+
+  void multiIntervalsValidation(
+      bool validateMultiTickers, List<Intervals> intervals) {
+    if (validateMultiTickers) {
+      if (intervals.isEmpty) {
+        throw Exception(
+            "You can`t use multi ticker with multi intervals without and interval");
+      }
+    }
   }
 
   void _tickersValidation() {
