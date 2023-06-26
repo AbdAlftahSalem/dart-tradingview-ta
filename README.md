@@ -9,9 +9,7 @@
 
 - Keep tradingview-ta up to date for new features and bug fixes: `flutter pub add tradingview_ta`
 - This project is a Dart implementation of
-the [python-tradingview-ta](https://github.com/AnalyzerREST/python-tradingview-ta) package, originally developed in
-Python. It provides technical analysis indicators and strategies for analyzing trading data from the TradingView
-platform.
+
 
 ## Features
 
@@ -31,21 +29,40 @@ GitHub (latest):
 ## Example
 
 ```python
-from tradingview_ta import TA_Handler, Interval, Exchange
+// to get multi ticekr data with signal interval
 
-TradingViewTA tradingViewTA = TradingViewTA(
-    tradingView: TradingViewModel(
-      screener: "crypto",
-      symbols: ["BINANCE:BTCUSDT", "BINANCE:ETHUSDT"],
-      interval: Intervals.INTERVAL_1_HOUR,
-    ),
-  );
+
+  TradingViewTA tradingViewTA = TradingViewTA(
+      tradingView: TradingViewModel(
+        screener: "crypto",
+        symbols: ["BINANCE:BTCUSDT", "BINANCE:ETHUSDT"],
+        interval: Intervals.INTERVAL_1_HOUR,
+      ),
+    );
   
-List<Map<String, dynamic>> resSupportAndResistant =
-await tradingViewTA.getSupportAndResistant();
-List<Map<String, dynamic>> resAnalysis = await tradingViewTA.getAnalysis();
-print(resSupportAndResistant);
-print(resAnalysis);
+// to get multi ticekr data with multi interval
+
+
+  List<Map<String, dynamic>> resAnalysis = await tradingViewTA.getAnalysis();
+
+
+// to get multi ticekr data with multi interval
+  
+  
+  List<Map<String, dynamic>> res =
+        await tradingViewTA.getAnalysisWithMultiFrame(
+        intervals: [
+          Intervals.INTERVAL_1_MONTH,
+          Intervals.INTERVAL_1_HOUR,
+        ],
+    );
+    print(res);
+  
+// to get support and resistant for tickers
+  
+  List<Map<String, dynamic>> resSupportAndResistant = await tradingViewTA.getSupportAndResistant();
+  print(resSupportAndResistant);
+  print(resAnalysis);
 ```
 
 Tip: Use https://tvdb.analyzer.rest/ if you don't know what symbol, screener, and exchange to use.
