@@ -49,22 +49,21 @@ class TradingViewTA {
     );
 
     if (res.statusCode == 200) {
-      // return _formatResToMapMultiInterval(res.data, indicatorsSend);
-      var x = newFunc(res.data, indicatorsSend);
-      print(x);
-      return [];
+      // _formatResToMapMultiInterval
+      return _formatResToMapMultiInterval(res.data, indicatorsSend);
     } else {
       throw Exception(res.data);
     }
   }
 
-  List<Map<String, dynamic>> newFunc(Map res, List<String> indicatorsSend) {
+  List<Map<String, dynamic>> _formatResToMapMultiInterval(
+      Map res, List<String> indicatorsSend) {
     List<Map<String, dynamic>> output = [];
-print(res["data"]);
     for (var i in res["data"]) {
       output.add({
         "ticker": i["s"],
-        "indicators": _formatResToMapMultiInterval(res, indicatorsSend),
+        "indicators":
+            _formatResToMapMultiIntervalIndicators(res, indicatorsSend),
       });
     }
 
@@ -122,7 +121,7 @@ print(res["data"]);
     return outPut;
   }
 
-  Map<String, dynamic> _formatResToMapMultiInterval(
+  Map<String, dynamic> _formatResToMapMultiIntervalIndicators(
       Map res, List<String> indicatorsSend) {
     Map<String, dynamic> outPut = {};
 
