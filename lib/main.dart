@@ -17,5 +17,4 @@ main() async {
       Intervals.INTERVAL_1_MONTH,
     ],
   );
-  print(res);
 }
