@@ -2,7 +2,7 @@
 <br>
 <div align="center">
   <p>An unofficial API wrapper for TradingView that allows you to fetch technical analysis data, now under new management.</p>
-  <img src="https://raw.githubusercontent.com/analyzerrest/python-tradingview-ta/main/images/tradingview.png" />
+  <img src="https://cdn.pixabay.com/photo/2016/11/27/21/42/stock-1863880_1280.jpg" />
 </div>
 
 ## Important
