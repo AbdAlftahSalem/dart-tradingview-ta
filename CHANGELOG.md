@@ -1,3 +1,3 @@
-## 1.3.0
+## 2.0.0
 
-- Add multi tickers with multi frames
+- Finish multi symbols with multi intervals 
