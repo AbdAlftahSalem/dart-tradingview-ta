@@ -10,10 +10,10 @@
 - Keep tradingview-ta up to date for new features and bug fixes: `flutter pub add tradingview_ta`
 - This project is a Dart implementation of
 
-
 ## Features
 
 * Support for multiple symbols
+* Get multi symbols with multi intervals
 * Indicators (Only TradingView built-in, does not support Pine Script/custom indicators)
 
 ## Installation

@@ -30,7 +30,6 @@ class ListsCont {
     "BBPower",
     "Rec.UO",
     "UO",
-    "close",
     "EMA5",
     "SMA5",
     "EMA10",
@@ -82,7 +81,6 @@ class ListsCont {
     "Pivot.M.Demark.S1",
     "Pivot.M.Demark.Middle",
     "Pivot.M.Demark.R1",
-    "open",
     "P.SAR",
     "BB.lower",
     "BB.upper",
@@ -90,6 +88,8 @@ class ListsCont {
     "volume",
     "change",
     "low",
-    "high"
+    "high",
+    "open",
+    "close",
   ];
 }

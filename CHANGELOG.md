@@ -1,3 +1,3 @@
-## 1.8.0
+## 2.0.0
 
-- Fix bug
+- Finish multi symbols with multi intervals 

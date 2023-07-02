@@ -6,7 +6,7 @@ main() async {
   TradingViewTA tradingViewTA = TradingViewTA(
     tradingView: TradingViewModel(
       screener: "crypto",
-      symbols: ["BINANCE:BTCUSDT", "BINANCE:ETHUSDT"],
+      symbols: ["BINANCE:BTCUSDT", "BINANCE:ETHUSDT", "BINANCE:SOLUSDT"],
       interval: Intervals.INTERVAL_1_DAY,
     ),
   );
@@ -17,4 +17,6 @@ main() async {
       Intervals.INTERVAL_1_MONTH,
     ],
   );
+
+  print(res);
 }
