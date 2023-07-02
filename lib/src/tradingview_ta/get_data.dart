@@ -22,7 +22,6 @@ class TradingViewTA {
       },
       header: {"User-Agent": "tradingview_ta/3.3.0"},
     );
-
     if (res.statusCode == 200) {
       return _formatResToMapSingleInterval(res.data);
     } else {
@@ -30,7 +29,7 @@ class TradingViewTA {
     }
   }
 
-  Future<List<Map<String, dynamic>>> getAnalysisWithMultiFrame({
+  Future<List> getAnalysisWithMultiFrame({
     required List<Intervals> intervals,
   }) async {
     _validationInput(
@@ -51,9 +50,33 @@ class TradingViewTA {
       header: {"User-Agent": "tradingview_ta/3.3.0"},
     );
 
+    List output = [];
     if (res.statusCode == 200) {
+      int counter = 0;
       // _formatResToMapMultiInterval
-      return _formatResToMapMultiInterval(res.data, indicatorsSend);
+      for (var item in res.data["data"]) {
+        List i = [];
+        int counter = 0;
+
+        for (var x in intervals) {
+          var output = _formatOutPutIndicators(
+              (item['d'] as List).sublist(counter, counter + 91));
+
+          i.add({
+            "interval": x.getValueIntervalToResponse(),
+            "indicators": output,
+          });
+          counter += 91;
+        }
+
+        output.add({
+          "ticker": item['s'],
+          "indicators": i,
+        });
+      }
+
+      return output;
+      // return _formatResToMapMultiInterval(res.data, indicatorsSend);
     } else {
       throw Exception(res.data);
     }
@@ -94,7 +117,7 @@ class TradingViewTA {
     List<String> newIndicators = [];
     for (var i in ListsCont.indicators) {
       newIndicators
-          .add("$i${tradingView.interval.getValueIntervalToResponse()}");
+          .add("$i${tradingView.interval.getValueIntervalToTradingView()}");
     }
     return newIndicators;
   }
@@ -105,7 +128,8 @@ class TradingViewTA {
     List<String> newIndicators = [];
     for (var interval in intervals) {
       for (var indicator in ListsCont.indicators) {
-        newIndicators.add("$indicator${interval.getValueIntervalToResponse()}");
+        newIndicators
+            .add("$indicator${interval.getValueIntervalToTradingView()}");
       }
     }
     return newIndicators;
@@ -114,13 +138,11 @@ class TradingViewTA {
   List<Map<String, dynamic>> _formatResToMapSingleInterval(Map res) {
     List<Map<String, dynamic>> outPut = [];
     for (int i = 0; i < res["data"].length; ++i) {
-      outPut.add(
-        {
-          "ticker": res["data"][i]["s"],
-          "interval": tradingView.interval.getValueIntervalToResponse(),
-          "indicators": _formatOutPutIndicators(res["data"][0]['d']),
-        },
-      );
+      outPut.add({
+        "ticker": res["data"][i]["s"],
+        "interval": tradingView.interval.getValueIntervalToResponse(),
+        "indicators": _formatOutPutIndicators(res["data"][i]['d']),
+      });
     }
 
     return outPut;
@@ -130,8 +152,10 @@ class TradingViewTA {
       Map res, List<String> indicatorsSend) {
     Map<String, dynamic> outPut = {};
 
-    for (int i = 0; i < indicatorsSend.length; i++) {
-      outPut[indicatorsSend[i]] = res["data"][0]['d'][i];
+    for (var j in res["data"]) {
+      for (int i = 0; i < indicatorsSend.length; i++) {
+        outPut[indicatorsSend[i]] = j['d'][i];
+      }
     }
 
     return x(outPut);

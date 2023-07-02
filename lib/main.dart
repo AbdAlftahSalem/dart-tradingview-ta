@@ -5,16 +5,16 @@ import 'src/tradingview_ta/get_data.dart';
 main() async {
   TradingViewTA tradingViewTA = TradingViewTA(
     tradingView: TradingViewModel(
-        screener: "crypto",
-        symbols: ["BINANCE:BTCUSDT", "BINANCE:ETHUSDT"],
-        interval: Intervals.INTERVAL_1_DAY),
+      screener: "crypto",
+      symbols: ["BINANCE:BTCUSDT", "BINANCE:ETHUSDT"],
+      interval: Intervals.INTERVAL_1_DAY,
+    ),
   );
 
-  List<Map<String, dynamic>> res =
-      await tradingViewTA.getAnalysisWithMultiFrame(
+  List res = await tradingViewTA.getAnalysisWithMultiFrame(
     intervals: [
+      Intervals.INTERVAL_1_DAY,
       Intervals.INTERVAL_1_MONTH,
-      Intervals.INTERVAL_1_HOUR,
     ],
   );
   print(res);

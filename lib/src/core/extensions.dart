@@ -18,7 +18,7 @@ extension GetValueEnum on Enum {
       case Intervals.INTERVAL_4_HOURS:
         return "|240";
       case Intervals.INTERVAL_1_DAY:
-        return "|1d";
+        return "";
       case Intervals.INTERVAL_1_WEEK:
         return "|1W";
       case Intervals.INTERVAL_1_MONTH:
@@ -33,7 +33,7 @@ extension GetValueEnum on Enum {
       case Intervals.INTERVAL_1_MINUTE:
         return "1m";
       case Intervals.INTERVAL_5_MINUTES:
-        return "5n";
+        return "5m";
       case Intervals.INTERVAL_15_MINUTES:
         return "15m";
       case Intervals.INTERVAL_30_MINUTES:
@@ -41,7 +41,7 @@ extension GetValueEnum on Enum {
       case Intervals.INTERVAL_1_HOUR:
         return "1h";
       case Intervals.INTERVAL_2_HOURS:
-        return "2h";
+        return "|2h";
       case Intervals.INTERVAL_4_HOURS:
         return "4h";
       case Intervals.INTERVAL_1_DAY:
@@ -49,9 +49,9 @@ extension GetValueEnum on Enum {
       case Intervals.INTERVAL_1_WEEK:
         return "1W";
       case Intervals.INTERVAL_1_MONTH:
-        return "1M";
+        return "|1M";
       default:
-        return "1h";
+        return "1d";
     }
   }
 }
