@@ -1,16 +1,39 @@
 import 'package:dio/dio.dart';
 import 'package:tradingview_ta/src/constant/list_contant.dart';
 import 'package:tradingview_ta/src/core/extensions.dart';
+import 'package:tradingview_ta/src/core/support_resistance.dart';
 import 'package:tradingview_ta/src/dio_maneger/dio_manger.dart';
 import 'package:tradingview_ta/src/tradingview_ta/trading_view_model.dart';
 
+/// Fetches TradingView technical analysis for one or more symbols.
+///
+/// ```dart
+/// final ta = TradingViewTA(
+///   tradingView: TradingViewModel(
+///     screener: "crypto",
+///     symbols: ["BINANCE:BTCUSDT"],
+///     interval: Intervals.INTERVAL_1_HOUR,
+///   ),
+/// );
+/// final analysis = await ta.getAnalysis();
+/// ```
 class TradingViewTA {
+  /// The screener, symbols and interval to request.
   TradingViewModel tradingView;
 
+  /// Creates a client for [tradingView].
   TradingViewTA({required this.tradingView}) {
     DioManagerClass.getInstance.init();
   }
 
+  /// Returns every indicator for each symbol at [TradingViewModel.interval].
+  ///
+  /// One map per symbol:
+  /// `{"ticker": "BINANCE:BTCUSDT", "interval": "1h", "indicators": [{"indicatorsName": "RSI", "value": 54.2}, ...]}`.
+  /// An indicator TradingView has no value for comes back with `"value": null`.
+  ///
+  /// Throws an [Exception] when a symbol has no `EXCHANGE:` prefix, the
+  /// screener is empty, or TradingView answers with an error.
   Future<List<Map<String, dynamic>>> getAnalysis() async {
     _validationInput();
     final res = await DioManagerClass.getInstance.dioPostMethod(
@@ -30,7 +53,12 @@ class TradingViewTA {
     }
   }
 
-  Future<List> getAnalysisWithMultiFrame({
+  /// Returns every indicator for each symbol at each of [intervals], in one
+  /// request.
+  ///
+  /// One map per symbol:
+  /// `{"ticker": ..., "indicators": [{"interval": "1d", "indicators": [...]}, ...]}`.
+  Future<List<Map<String, dynamic>>> getAnalysisWithMultiFrame({
     required List<Intervals> intervals,
   }) async {
     _validationInput(
@@ -52,7 +80,8 @@ class TradingViewTA {
     );
 
     if (res.statusCode == 200) {
-      List<dynamic> output = _formatResToMapMultiInterval(res, intervals);
+      List<Map<String, dynamic>> output =
+          _formatResToMapMultiInterval(res, intervals);
 
       return output;
     } else {
@@ -60,22 +89,23 @@ class TradingViewTA {
     }
   }
 
-  List<dynamic> _formatResToMapMultiInterval(
+  List<Map<String, dynamic>> _formatResToMapMultiInterval(
       Response<dynamic> res, List<Intervals> intervals) {
-    List output = [];
+    final int indicatorsCount = ListsCont.indicators.length;
+    List<Map<String, dynamic>> output = [];
     for (var item in res.data["data"]) {
       List fullIndicators = [];
       int counter = 0;
 
       for (var interval in intervals) {
         var output = _formatOutPutIndicators(
-            (item['d'] as List).sublist(counter, counter + 91));
+            (item['d'] as List).sublist(counter, counter + indicatorsCount));
 
         fullIndicators.add({
           "interval": interval.getValueIntervalToResponse(),
           "indicators": output,
         });
-        counter += 91;
+        counter += indicatorsCount;
       }
 
       output.add({
@@ -86,6 +116,12 @@ class TradingViewTA {
     return output;
   }
 
+  /// Returns support and resistance levels for each symbol.
+  ///
+  /// Each level (`s3`, `s2`, `s1`, `middle`, `r1`, `r2`, `r3`) is the average
+  /// of TradingView's monthly Classic, Fibonacci, Camarilla and Woodie pivot
+  /// points (`null` if TradingView has none of them for that symbol):
+  /// `{"ticker": ..., "SupportAndResistant": {"r3": ..., ..., "middle": ...}}`.
   Future<List<Map<String, dynamic>>> getSupportAndResistant() async {
     List<Map<String, dynamic>> output = [];
     _validationInput();
@@ -151,122 +187,8 @@ class TradingViewTA {
     return outPut;
   }
 
-  Map<String, dynamic> _getSupportAndResistantAsMap(List indicators) {
-    double pivotMClassicS3 = indicators.firstWhere((element) =>
-        element["indicatorsName"] == "Pivot.M.Classic.S3")["value"];
-
-    double pivotMClassicS2 = indicators.firstWhere((element) =>
-        element["indicatorsName"] == "Pivot.M.Classic.S2")["value"];
-
-    double pivotMClassicS1 = indicators.firstWhere((element) =>
-        element["indicatorsName"] == "Pivot.M.Classic.S1")["value"];
-
-    double pivotMClassicR3 = indicators.firstWhere((element) =>
-        element["indicatorsName"] == "Pivot.M.Classic.R3")["value"];
-
-    double pivotMClassicR2 = indicators.firstWhere((element) =>
-        element["indicatorsName"] == "Pivot.M.Classic.R2")["value"];
-
-    double pivotMClassicR1 = indicators.firstWhere((element) =>
-        element["indicatorsName"] == "Pivot.M.Classic.R1")["value"];
-
-    double pivotMClassicMiddle = indicators.firstWhere((element) =>
-        element["indicatorsName"] == "Pivot.M.Classic.Middle")["value"];
-
-    double pivotMFibonacciS3 = indicators.firstWhere((element) =>
-        element["indicatorsName"] == "Pivot.M.Fibonacci.S3")["value"];
-
-    double pivotMFibonacciS2 = indicators.firstWhere((element) =>
-        element["indicatorsName"] == "Pivot.M.Fibonacci.S2")["value"];
-
-    double pivotMFibonacciS1 = indicators.firstWhere((element) =>
-        element["indicatorsName"] == "Pivot.M.Fibonacci.S1")["value"];
-
-    double pivotMFibonacciR3 = indicators.firstWhere((element) =>
-        element["indicatorsName"] == "Pivot.M.Fibonacci.R3")["value"];
-
-    double pivotMFibonacciR2 = indicators.firstWhere((element) =>
-        element["indicatorsName"] == "Pivot.M.Fibonacci.R2")["value"];
-
-    double pivotMFibonacciR1 = indicators.firstWhere((element) =>
-        element["indicatorsName"] == "Pivot.M.Fibonacci.R1")["value"];
-
-    double pivotMFibonacciMiddle = indicators.firstWhere((element) =>
-        element["indicatorsName"] == "Pivot.M.Fibonacci.Middle")["value"];
-
-    double pivotMCamarillaS3 = indicators.firstWhere((element) =>
-        element["indicatorsName"] == "Pivot.M.Camarilla.S3")["value"];
-
-    double pivotMCamarillaS2 = indicators.firstWhere((element) =>
-        element["indicatorsName"] == "Pivot.M.Camarilla.S2")["value"];
-
-    double pivotMCamarillaS1 = indicators.firstWhere((element) =>
-        element["indicatorsName"] == "Pivot.M.Camarilla.S1")["value"];
-
-    double pivotMCamarillaR3 = indicators.firstWhere((element) =>
-        element["indicatorsName"] == "Pivot.M.Camarilla.R3")["value"];
-
-    double pivotMCamarillaR2 = indicators.firstWhere((element) =>
-        element["indicatorsName"] == "Pivot.M.Camarilla.R2")["value"];
-
-    double pivotMCamarillaR1 = indicators.firstWhere((element) =>
-        element["indicatorsName"] == "Pivot.M.Camarilla.R1")["value"];
-
-    double pivotMCamarillaMiddle = indicators.firstWhere((element) =>
-        element["indicatorsName"] == "Pivot.M.Camarilla.Middle")["value"];
-
-    double pivotMWoodieS3 = indicators.firstWhere(
-        (element) => element["indicatorsName"] == "Pivot.M.Woodie.S3")["value"];
-
-    double pivotMWoodieS2 = indicators.firstWhere(
-        (element) => element["indicatorsName"] == "Pivot.M.Woodie.S2")["value"];
-
-    double pivotMWoodieS1 = indicators.firstWhere(
-        (element) => element["indicatorsName"] == "Pivot.M.Woodie.S1")["value"];
-
-    double pivotMWoodieR3 = indicators.firstWhere(
-        (element) => element["indicatorsName"] == "Pivot.M.Woodie.R3")["value"];
-
-    double pivotMWoodieR2 = indicators.firstWhere(
-        (element) => element["indicatorsName"] == "Pivot.M.Woodie.R2")["value"];
-
-    double pivotMWoodieR1 = indicators.firstWhere(
-        (element) => element["indicatorsName"] == "Pivot.M.Woodie.R1")["value"];
-
-    double pivotMWoodieMiddle = indicators.firstWhere((element) =>
-        element["indicatorsName"] == "Pivot.M.Woodie.Middle")["value"];
-
-    return {
-      "r3": pivotMWoodieR3 +
-          pivotMCamarillaR3 +
-          pivotMClassicR3 +
-          pivotMFibonacciR3,
-      "r2": pivotMWoodieR2 +
-          pivotMCamarillaR2 +
-          pivotMClassicR2 +
-          pivotMFibonacciR2,
-      "r1": pivotMWoodieR1 +
-          pivotMCamarillaR1 +
-          pivotMClassicR1 +
-          pivotMFibonacciR1,
-      "s1": pivotMWoodieS1 +
-          pivotMCamarillaS1 +
-          pivotMClassicS1 +
-          pivotMFibonacciS1,
-      "s2": pivotMWoodieS2 +
-          pivotMCamarillaS2 +
-          pivotMClassicS2 +
-          pivotMFibonacciS2,
-      "s3": pivotMWoodieS3 +
-          pivotMCamarillaS3 +
-          pivotMClassicS3 +
-          pivotMFibonacciS3,
-      "middle": pivotMWoodieMiddle +
-          pivotMCamarillaMiddle +
-          pivotMClassicMiddle +
-          pivotMFibonacciMiddle,
-    };
-  }
+  Map<String, dynamic> _getSupportAndResistantAsMap(List indicators) =>
+      supportAndResistanceFromIndicators(indicators);
 
   void _validationInput({
     bool validateMultiTickers = false,
@@ -277,12 +199,13 @@ class TradingViewTA {
     _screenerValidation();
   }
 
+  /// Throws when a multi-interval request has no intervals.
   void multiIntervalsValidation(
       bool validateMultiTickers, List<Intervals> intervals) {
     if (validateMultiTickers) {
       if (intervals.isEmpty) {
         throw Exception(
-            "You can`t use multi ticker with multi intervals without and interval");
+            "getAnalysisWithMultiFrame needs at least one interval");
       }
     }
   }

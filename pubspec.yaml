@@ -1,16 +1,23 @@
 name: tradingview_ta
-description: Unofficial TradingView technical analysis API wrapper in dart.
-version: 2.0.0
+description: >-
+  Unofficial TradingView technical analysis client for Dart and Flutter. Get
+  indicators, signals and support/resistance for many symbols and intervals.
+version: 2.1.0
 repository: https://github.com/AbdAlftahSalem/dart-tradingview-ta
-homepage: https://github.com/AbdAlftahSalem/dart-tradingview-ta
+issue_tracker: https://github.com/AbdAlftahSalem/dart-tradingview-ta/issues
+topics:
+  - tradingview
+  - trading
+  - technical-analysis
+  - crypto
+  - stocks
 
 environment:
-  sdk: '>=2.19.2 <3.0.0'
+  sdk: ^3.0.0
 
 dependencies:
   dio: ^5.2.1+1
 
-
 dev_dependencies:
-  lints: ^2.0.0
-  test: ^1.21.0
+  lints: ^6.0.0
+  test: ^1.24.0

@@ -1,6 +1,8 @@
 import 'package:tradingview_ta/src/tradingview_ta/trading_view_model.dart';
 
+/// Maps an [Intervals] value to TradingView's request and response formats.
 extension GetValueEnum on Enum {
+  /// Suffix TradingView expects on each indicator column, e.g. `|60`.
   String getValueIntervalToTradingView() {
     switch (this) {
       case Intervals.INTERVAL_1_MINUTE:
@@ -28,6 +30,7 @@ extension GetValueEnum on Enum {
     }
   }
 
+  /// Readable interval label used in results, e.g. `1h`.
   String getValueIntervalToResponse() {
     switch (this) {
       case Intervals.INTERVAL_1_MINUTE:
@@ -41,7 +44,7 @@ extension GetValueEnum on Enum {
       case Intervals.INTERVAL_1_HOUR:
         return "1h";
       case Intervals.INTERVAL_2_HOURS:
-        return "|2h";
+        return "2h";
       case Intervals.INTERVAL_4_HOURS:
         return "4h";
       case Intervals.INTERVAL_1_DAY:
@@ -49,7 +52,7 @@ extension GetValueEnum on Enum {
       case Intervals.INTERVAL_1_WEEK:
         return "1W";
       case Intervals.INTERVAL_1_MONTH:
-        return "|1M";
+        return "1M";
       default:
         return "1d";
     }
